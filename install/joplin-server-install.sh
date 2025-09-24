@@ -48,7 +48,7 @@ msg_ok "Set up PostgreSQL Database"
 fetch_and_deploy_gh_release "joplin-server" "laurent22/joplin" "tarball" "latest"
 
 msg_info "Setting up Joplin Server (Patience)"
-LOCAL_IP=$(hostname -I | awk '{print $1}')
+LOCAL_HOSTNAME=$(hostname | awk '{print $1}')
 cd /opt/joplin-server
 sed -i "/onenote-converter/d" packages/lib/package.json
 $STD yarn config set --home enableTelemetry 0
@@ -58,7 +58,7 @@ $STD yarn install --inline-builds
 cat <<EOF >/opt/joplin-server/.env
 PM2_HOME=/opt/pm2
 NODE_ENV=production
-APP_BASE_URL=http://$LOCAL_IP:22300
+APP_BASE_URL=http://$LOCAL_HOSTNAME:22300
 APP_PORT=22300
 DB_CLIENT=pg
 POSTGRES_PASSWORD=$DB_PASS
